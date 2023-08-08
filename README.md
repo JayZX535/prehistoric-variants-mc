@@ -1,3 +1,4 @@
+![A herd of mammoths grazes on a sparse tundra, with a red and orange logo reading "Prehistoric Spawns" superimposed in the sky above them](prehistoricspawns_header.jpg)
 # Prehistoric Spawns (A Fossils and Archeology Add-On)
 Documentation, issues, and extra configurations for the Prehistoric Spawns Minecraft mod.
 
