@@ -1,0 +1,18 @@
+{
+  "textureName": "furious",
+  "conditions": [
+    {
+      "type": "random",
+      "spawn_chance": 0.05,
+      "inheritance_chance": 0.05,
+	  "required_mods": {
+		  "mods": [
+			"isleofberk",
+			"newberksdawn"
+		  ]
+	  }
+	}
+  ],
+  "hasBabyTexture": true,
+  "hasGenderTextures": true
+}

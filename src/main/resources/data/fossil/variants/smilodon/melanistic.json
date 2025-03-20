@@ -1,0 +1,13 @@
+{
+  "textureName": "melanistic",
+  "conditions": [
+    {
+      "type": "random",
+      "spawn_chance": 0.01,
+      "inheritance_chance": 0.1
+    }
+  ],
+  "hasBabyTexture": true,
+  "hasTeenTextures": true,
+  "hasGenderTextures": true
+}

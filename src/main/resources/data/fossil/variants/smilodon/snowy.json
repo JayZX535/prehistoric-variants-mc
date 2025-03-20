@@ -1,0 +1,14 @@
+{
+  "textureName": "snowy",
+  "conditions": [
+    {
+      "type": "spawn_biome",
+      "biome_tag": "prehistoricvariants:snowy_smilodon_biomes",
+      "spawn_chance": 1,
+      "inheritance_chance": 1
+    }
+  ],
+  "hasBabyTexture": true,
+  "hasTeenTextures": true,
+  "hasGenderTextures": true
+}

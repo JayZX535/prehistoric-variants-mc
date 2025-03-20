@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.jayzx535.prehistoricvariants.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "prehistoricvariants.refmap.json",
+  "mixins": [
+	"ModEventsMixin",
+	"PrehistoricMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
