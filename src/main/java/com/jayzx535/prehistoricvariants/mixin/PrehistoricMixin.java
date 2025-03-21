@@ -53,22 +53,9 @@ public abstract class PrehistoricMixin extends TamableAnimal implements IBonusVa
 	public void procreate(Prehistoric mateIn, CallbackInfo callbackIn, Calendar calendarIn, Entity entityIn, Prehistoric prehistoricIn) {
 		// Since this is called after finalizeSpawn for the baby, inherited variants have a chance to overwrite
 		if ((Object) prehistoricIn instanceof PrehistoricMixin prehistoricBaby) {
-			if (this.getType().equals(prehistoricIn.getType())) {
-				if (this.allVariants.containsKey(PrehistoricVariants.randomCondition())) {
-					VariantCondition.WithVariant<?> conditionWithVariant = this.allVariants.get(PrehistoricVariants.randomCondition());
-					if (conditionWithVariant.condition() instanceof RandomCondition randomCondition && randomCondition.testInheritance(this.random)) {
-						PrehistoricVariants.getLogger().debug("Baby of type " + prehistoricBaby.getType().getRegistryName().toString() + " inherited the random variant " + conditionWithVariant.variant().getVariantId() + " from its parent.");
-						prehistoricBaby.setVariant(PrehistoricVariants.randomCondition(), conditionWithVariant);
-					}
-				}
-				if (this.allVariants.containsKey(PrehistoricVariants.spawnBiomeCondition())) {
-					VariantCondition.WithVariant<?> conditionWithVariant = this.allVariants.get(PrehistoricVariants.spawnBiomeCondition());
-					if (conditionWithVariant.condition() instanceof SpawnBiomeCondition biomeCondition && biomeCondition.testInheritance(this.random)) {
-						PrehistoricVariants.getLogger().debug("Baby of type " + prehistoricBaby.getType().getRegistryName().toString() + " inherited the biome variant " + conditionWithVariant.variant().getVariantId() + " from its parent.");
-						prehistoricBaby.setVariant(PrehistoricVariants.spawnBiomeCondition(), conditionWithVariant);
-					}
-				}
-			}
+			PrehistoricMixin prehistoricMate = (Object) mateIn instanceof PrehistoricMixin mixinMate ? mixinMate : null;
+			prehistoricBaby.inheritVariantFromRandomParent(this, prehistoricMate, PrehistoricVariants.randomCondition());
+			prehistoricBaby.inheritVariantFromRandomParent(this, prehistoricMate, PrehistoricVariants.spawnBiomeCondition());
 		}
 	}
 	
@@ -104,5 +91,20 @@ public abstract class PrehistoricMixin extends TamableAnimal implements IBonusVa
 	@Unique
 	public boolean hasMatchingVariant(VariantRegistry.RegistryObject<?> typeIn, VariantCondition.WithVariant<?> pairIn) {
 		return this.allVariants.containsKey(typeIn) && Objects.equals(this.allVariants.get(typeIn).condition(), pairIn.condition());
+	}
+	
+	@Unique
+	private void inheritVariantFromRandomParent(PrehistoricMixin motherIn, PrehistoricMixin fatherIn, VariantRegistry.RegistryObject<?> typeIn) {
+		if ((motherIn != null || fatherIn != null)) {
+			PrehistoricMixin inheritingParent = motherIn;
+			if (fatherIn != null) inheritingParent = motherIn != null ? motherIn.random.nextBoolean() ? motherIn : fatherIn : fatherIn;
+			if (inheritingParent.getType().equals(this.getType()) && inheritingParent.allVariants.containsKey(typeIn)) {
+				VariantCondition.WithVariant<?> conditionWithVariant = inheritingParent.allVariants.get(typeIn);
+				if (conditionWithVariant.condition() instanceof InheritableCondition inheritableCondition && inheritableCondition.testInheritance(this.random)) {
+					PrehistoricVariants.getLogger().debug("Baby of type " + this.getType().getRegistryName().toString() + " inherited the variant " + conditionWithVariant.variant().getVariantId() + " from its parent " + inheritingParent.getUUID() + ".");
+					this.setVariant(typeIn, conditionWithVariant);
+				}
+			}
+		}
 	}
 }
